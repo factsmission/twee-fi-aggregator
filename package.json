@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "ws": "latest",
+    "rdflib": "latest",
+    "solid-web-client": "latest",
+    "request": "latest"
+  }
+}
