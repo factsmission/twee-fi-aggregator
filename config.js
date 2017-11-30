@@ -1,6 +1,5 @@
 var config = {
-    "ws": "wss://alemela.solidtest.space",
-    "https": "https://alemela.solidtest.space/public/twee-fi/",
+    "users": "https://github.com/factsmission/twee-fi-aggregator/raw/master/USERS.js",
     "graph": "http://twee-fi.factsmission.com",
     "cldi": {
         "baseUrl": "cldi.factsmission.com",
