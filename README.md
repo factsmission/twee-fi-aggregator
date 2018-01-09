@@ -5,7 +5,7 @@ and waits for messages. When a `pub` message arrives it loads all the triples re
 Twee-Fi stored so far.
 
 You need to set inside `config.js`:
-* the websocket and the https link to a Solid account
+* the https link to a Solid account
 * the Named Graph
 * the baseUrl of a CLDI instance
 

@@ -3,32 +3,24 @@ const WebSocket = require('ws');
 var rdf = require('rdflib');
 var webClient = require('solid-web-client')(rdf);
 var request = require('request');
-
-
-function checkIfNew(obj, array) {
-    for (var i = 0; i < array.length; i++) {
-        if (array[i].websocket === obj.websocket && array[i].webpage === obj.webpage) {
-            return false;
-        }
-    }
-    return true;
-}
+var adifference = require('array-difference');
+require('console-stamp')(console, { pattern: 'yyyy/mm/dd HH:MM:ss.l' });
 
 function subscribe (ws, container) {
-    var ws = new WebSocket(ws);
+    let wsIndex = wsList.push(new WebSocket(ws)) -1;
 
     console.log("Init ws for " + container);
-    ws.on('message', function incoming(data) {
+    wsList[wsIndex].on('message', function incoming(data) {
         console.log("Message coming!");
+        console.log(data);
         if (data.slice(0, 3) === 'pub') {
             getAllReviews(data.substring(4));
         }
-        console.log(data);
     });
 
     console.log("Subscribing to " + container);
-    ws.on('open', function open() {
-        ws.send('sub ' + container);
+    wsList[wsIndex].on('open', function open() {
+        this.send('sub ' + container);
     });
 }
 
@@ -81,14 +73,20 @@ function getUserList () {
             var newList;
             try {
                 newList = JSON.parse(body);
-                for (var i = 0; i < newList.length; i++) {
-                    if (checkIfNew(newList[i], subscribersList)) {
-                        subscribersList.push(newList[i]);
-                        console.log("Added a new user!");
-                        console.log(newList[i]);
 
-                        subscribe(newList[i].websocket, newList[i].webpage);
-                        getAllReviews(newList[i].webpage);
+                let diff = adifference(newList, subscribersList);
+
+                if (diff.length > 0) {
+                    console.log("Found new users!");
+                    subscribersList = subscribersList.concat(diff);
+
+                    for (let i = 0; i < diff.length; i++) {
+                        console.log(diff[i]);
+                        request(diff[i], function (error, response, body) {
+                            let webso = response.headers["updates-via"];
+                            subscribe(webso, diff[i]);
+                            getAllReviews(diff[i]);
+                        });
                     }
                 }
             } catch (e) {
@@ -101,8 +99,9 @@ function getUserList () {
 }
 
 var subscribersList = [];
+var wsList = [];
 
 getUserList();
 setInterval(function(){
     getUserList();
-}, 60000*5);
+}, 10000);

@@ -3,6 +3,8 @@
     "ws": "latest",
     "rdflib": "latest",
     "solid-web-client": "latest",
-    "request": "latest"
+    "request": "latest",
+    "array-difference": "latest",
+    "console-stamp": "latest"
   }
 }
