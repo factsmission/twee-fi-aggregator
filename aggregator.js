@@ -36,6 +36,9 @@ function loadIntoCLDI (RDFIRI) {
 };
 
 function getAllReviewsPerUser (twitterUser) {
+    if (twitterUser.indexOf('latestReview.ttl') !== -1 ) {
+        console.log("XXXXXX")
+    } else {
     webClient.get(twitterUser).then(function (response) {
         response.resource.contentsUris.forEach(function(tweet) {
             webClient.get(tweet).then(function (response) {
@@ -45,6 +48,7 @@ function getAllReviewsPerUser (twitterUser) {
             });
         });
     });
+  }
 }
 
 function getAllReviews (container) {
