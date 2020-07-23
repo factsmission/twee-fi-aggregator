@@ -5,4 +5,5 @@
   "https://davide.solidtest.space/public/twee-fi/"
   "https://dewomser.solid.community/public/twee-fi/"
   "https://martinomensio.solid.community/public/twee-fi/"
+  "https://mdsolehinsabtu.solid.community/public/twee-fi/"
 ]
